@@ -179,8 +179,7 @@ SELECT * FROM Department SELECT TOP 2* FROM Intern
 
 SELECT * FROM Department SELECT TOP 2 percent * FROM Intern
 
-/*SELECT Department.Department_Name,Intern.Intern_Name, Intern.Inter_Salary FROM Intern where Inter_Salary=(SELECT MAX(Inter_Salary) FROM Intern)
- JOIN Department ON Intern.Department_Id=Department.Department_Id*/
+
 
 SELECT * FROM Intern
 
@@ -278,4 +277,180 @@ FROM
 	FULL JOIN employees e 
 		ON e.fullname = c.fullname;
 
+
+-------------------------------------------------------------------------------------------
+create table Department(
+Department_Id int primary key,
+Department_Name varchar(80),
+Department_Address varchar(100),
+);
+create table Intern(
+Intern_Id int,
+Intern_Name varchar(70),
+Inter_Salary Money,
+Department_Id int foreign key references Department(Department_Id)
+);
+
+
+SELECT * FROM Department
+
+SELECT * FROM Intern
+
+SELECT Intern_Name + '_' + cast(Inter_Salary as varchar (9)) FROM Intern
+
+
+SELECT Intern_Name +'-'+cast (Intern_Name as varchar(12)) Intern_Id ,Inter_Salary from Intern
+
+SELECT Intern_Name +'-'+cast (Department_Id as varchar(12)) Intern_Id ,Inter_Salary from Intern
+
+SELECT CONVERT (int,Inter_Salary) FROM Intern
+
+SELECT CONVERT (varchar (12),Intern_Id)as internid,Intern_Name FROM Intern
+
+SELECT Intern_Name + '_' + CONVERT(varchar (9),Inter_Salary) FROM Intern
+
+
+
+SELECT * FROM Intern WHERE Intern_Name LIKE 'TEJAS'
+
+SELECT * FROM Intern WHERE Intern_Name LIKE 'YASH'
+
+
+-------------------------------------------------------VIEWS----------------
+create table dept(
+dept_id int,
+ dept_Name varchar(80),
+ dept_address varchar(100),
+);
+
+
+create table emp(
+emp_id int,
+emp_Name varchar(70),
+emp_Salary Money,
+dept_Id int foreign key references Department(Department_Id)
+);
+SELECT * FROM dept
+
+SELECT * FROM emp
+
+drop table dept
+drop table emp
+
+insert into dept values (1,'HR','PUNE')
+insert into dept values (2,'ACC','AMT')
+insert into dept values (3,'FINAN','NAG')
+insert into dept values (4,'HEAD','MUMBAI')
+
+insert into emp values (1,'TEJAS',60000,'1')
+insert into emp values (2,'YASH',50000,'2')
+insert into emp values (3,'PIYUSH',55000,'3')
+insert into emp values (4,'OM',55000,'4')
+
+
+create view emp_dept 
+as 
+SELECT e.emp_Name,e.emp_Salary,d.dept_Name,d.dept_address from emp e INNER JOIN dept d  on e.dept_id = d.dept_id
+
+select * from emp_dept
+
+drop view emp_dept
+
+create view dept_emp
+as
+SELECT d.dept_address,d.dept_Name,e.emp_name from emp e INNER JOIN dept d on e.emp_id = d.dept_id
+
+SELECT * FROM dept_emp
+
+SELECT * FROM (SELECT e.emp_Name,e.emp_Salary,d.dept_Name,d.dept_address from emp e 
+INNER JOIN dept d  on e.dept_id = d.dept_id) as derivedtable where dept_id=3
+
+
+
+------------------------------------------FUNCTION------------------------------------------------------
+
+CREATE FUNCTION ADDIITION(@NUM1 Decimal(5,2),@NUM2 Decimal(5,2))
+
+RETURNS Decimal (5,2)
+BEGIN 
+ DECLARE @RESULT DECIMAL(5,2)
+ SET @RESULT = @NUM1 + @NUM2
+ RETURN @RESULT
+ END
+
+
+ print dbo.ADDIITION(200,600)
+
+
+ CREATE FUNCTION SELECT_NAME(@NAME as varchar(40))
+ RETURNS TABLE 
+ AS
+ RETURN
+ (
+ SELECT * FROM emp where emp_Name=@NAME
+ )
+
+ SELECT * FROM dbo.SELECT_NAME('TEJAS')
+
+
+ CREATE FUNCTION SELECT_SALARY(@SALARY as varchar(40))
+ RETURNS TABLE 
+ AS
+ RETURN
+ (
+ SELECT * FROM emp where emp_Name=@SALARY
+ )
+
+ SELECT * FROM dbo.SELECT_Salary('TEJAS')
+
+
+CREATE FUNCTION SELECT_ADDRESS(@ADDRESS as varchar(40))
+ RETURNS TABLE
+ AS
+ RETURN 
+ (
+ SELECT * FROM dept where dept_address=@ADDRESS
+ )
+
+ SELECT * FROM dbo.SELECT_ADDRESS('PUNE')
+
+
+
+ create table Agent(
+agent_id int ,
+agent_Name varchar(70),
+agent_Salary Money,
+gender varchar(40)
+);
+
+select * from Agent
+
+insert into Agent values (1,'Sam',50000,'MALE')
+insert into Agent values (2,'AKANSHA',60000,'FEMALE')
+insert into Agent values (3,'RITA',50000,'FEMALE')
+insert into Agent values (4,'ALIA',40000,'FEMALE')
+insert into Agent values (5,'RAM',60000,'MALE')
+insert into Agent values (6,'SHUBHAM',70000,'MALE')
+insert into Agent values (7,'AKSHAY',80000,'MALE')
+insert into Agent values (8,'KRISHNA',90000,'MALE')
+insert into Agent values (9,'SAMIKSHA',50000,'FEMALE')
+insert into Agent values (10,'SURBHI',70000,'FEMALE')
+
+
+CREATE FUNCTION SELECT_GENDER(@GENDER as varchar(40))
+ RETURNS TABLE 
+ AS
+ RETURN
+ (
+ SELECT * FROM Agent where gender=@GENDER
+ )
+
+ SELECT * FROM dbo.SELECT_GENDER('MALE')
+
+ DELETE FROM Agent where agent_id=1
+
+ UPDATE Agent set agent_Name = 'TEJAS' WHERE agent_id=1;
+
+
+ ------------------------------------UPDATE CASCADE--------------------------------------------------------
 
