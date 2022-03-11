@@ -316,7 +316,7 @@ SELECT * FROM Intern WHERE Intern_Name LIKE 'TEJAS'
 SELECT * FROM Intern WHERE Intern_Name LIKE 'YASH'
 
 
--------------------------------------------------------VIEWS----------------
+-------------------------------------------------------VIEWS----------------------------------------
 create table dept(
 dept_id int,
  dept_Name varchar(80),
@@ -452,5 +452,54 @@ CREATE FUNCTION SELECT_GENDER(@GENDER as varchar(40))
  UPDATE Agent set agent_Name = 'TEJAS' WHERE agent_id=1;
 
 
- ------------------------------------UPDATE CASCADE--------------------------------------------------------
+ ------------------------------------DELETE CASCADE--------------------------------------------------------------
+
+ create table Customers(
+ cust_id int primary key,
+ cust_name varchar(100)
+ )
+
+ insert into Customers (cust_id,cust_name)values(1,'Tejas')
+ insert into Customers (cust_id,cust_name)values(2,'Patil')
+
+ create table Orders(
+ order_id int identity(1,1) Primary key,
+ cust_id int,
+ product_items varchar(30),
+ foreign key(cust_id) references Customers(Cust_id)
+ ON DELETE SET null
+ )
+
+ insert into Orders(cust_id,product_items)values(1,'IPHONE')
+ insert into Orders(cust_id,product_items)values(3,'SAMSUNG')
+
+ UPDATE Orders SET cust_id=2 where cust_id=3
+
+ SELECT * FROM Customers
+  SELECT * FROM Orders
+
+  DELETE FROM Customers where cust_id = 2
+
+DROP TABLE Cutomers
+
+DROP TABLE Orders
+
+--------------------------------------UPDATE CASCADE---------------------
+
+create table Orders(
+ order_id int identity(1,1) Primary key,
+ cust_id int,
+ product_items varchar(30),
+ foreign key(cust_id) references Customers(Cust_id)
+ ON UPDATE CASCADE 
+ )
+
+ insert into Orders(cust_id,product_items)values(1,'IPHONE')
+ insert into Orders(cust_id,product_items)values(3,'SAMSUNG')
+
+ UPDATE Customers SET cust_id=2 where cust_id=1
+
+ SELECT * FROM Customers
+ SELECT * FROM Orders
+
 
