@@ -503,3 +503,99 @@ create table Orders(
  SELECT * FROM Orders
 
 
+ ---------------------------------
+
+  create table Agent(
+agent_id int ,
+agent_Name varchar(70),
+agent_Salary Money,
+gender varchar(40),
+ DT DATE not null
+);
+select * from Agent
+drop  table Agent 
+
+insert into Agent values (1,'Sam',50000,'MALE','1997.11.30')
+insert into Agent values (2,'AKANSHA',60000,'FEMALE','2000.12.21')
+insert into Agent values (3,'RITA',50000,'FEMALE','2001.02.12')
+insert into Agent values (4,'ALIA',40000,'FEMALE','2003.04.22')
+insert into Agent values (5,'RAM',60000,'MALE','2004.05.20')
+insert into Agent values (6,'SHUBHAM',70000,'MALE','2005.06.25')
+insert into Agent values (7,'AKSHAY',80000,'MALE','2006.07.26')
+insert into Agent values (8,'KRISHNA',90000,'MALE','2007.08.27')
+insert into Agent values (9,'SAMIKSHA',50000,'FEMALE','2008.09.28')
+insert into Agent values (10,'SURBHI',70000,'FEMALE','2009.10.29')
+
+SELECT MAX(agent_salary)from Agent
+
+
+create procedure retriveallAgentBetweeen_Range
+As
+Begin try
+select * from Agent where DT between '2001.02.10' and '2009.10.30'
+end try
+begin catch
+SELECT
+	ERROR_NUMBER() AS ErrorNumber,
+	ERROR_STATE() AS ErrorState,
+	ERROR_PROCEDURE() AS ErrorProcedure,
+	ERROR_LINE() AS ErrorLine,
+	ERROR_MESSAGE() AS ErrorMessage
+END CATCH
+
+	exec retriveallAgentBetweeen_Range
+
+
+create procedure FetchSalary
+As
+Begin try
+select agent_Salary,agent_id,agent_id from Agent where gender='MALE'
+end try
+begin catch
+SELECT
+	ERROR_NUMBER() AS ErrorNumber,
+	ERROR_STATE() AS ErrorState,
+	ERROR_PROCEDURE() AS ErrorProcedure,
+	ERROR_LINE() AS ErrorLine,
+	ERROR_MESSAGE() AS ErrorMessage
+END CATCH
+
+exec FetchSalary
+
+
+Alter procedure FetchSalaryNAMEID
+As
+Begin try
+select agent_Salary,agent_id,agent_Name from Agent where gender='MALE'
+end try
+begin catch
+SELECT
+	ERROR_NUMBER() AS ErrorNumber,
+	ERROR_STATE() AS ErrorState,
+	ERROR_PROCEDURE() AS ErrorProcedure,
+	ERROR_LINE() AS ErrorLine,
+	ERROR_MESSAGE() AS ErrorMessage
+END CATCH
+
+exec FetchSalaryNAMEID
+
+
+-----------------------------------------------------INDEXING-------------------------------------------
+
+create clustered index CLID_Agentdetails
+on [dbo].[Agent](agent_Name desc,agent_Salary desc)
+
+SELECT * FROM [dbo].[Agent]
+
+SELECT * FROM [dbo].[Agent] where agent_id=2
+
+
+
+
+------------------------------------Non Clustered Index--------------------------------------------------------
+
+create Nonclustered index NON_CLID_Agentdetails
+on [dbo].[Agent](agent_Name ,agent_Salary )
+
+SELECT * FROM [dbo].[Agent]
+SELECT * FROM [dbo].[Agent] where agent_id=5
