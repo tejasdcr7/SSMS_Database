@@ -95,3 +95,44 @@ from Employees
 join Department on Employees.Department_ID = Department.Department_ID
 join  Genders on Employees.Gender_ID = Genders.Gender_ID
 order by Employee_Name asc
+
+-----------------------------------------------------INDEXING-------------------------------------------
+create table Agent(
+agent_id int ,
+agent_Name varchar(70),
+agent_Salary Money,
+gender varchar(40),
+ DT DATE not null
+);
+select * from Agent
+drop  table Agent 
+
+insert into Agent values (1,'Sam',50000,'MALE','1997.11.30')
+insert into Agent values (2,'AKANSHA',60000,'FEMALE','2000.12.21')
+insert into Agent values (3,'RITA',50000,'FEMALE','2001.02.12')
+insert into Agent values (4,'ALIA',40000,'FEMALE','2003.04.22')
+insert into Agent values (5,'RAM',60000,'MALE','2004.05.20')
+insert into Agent values (6,'SHUBHAM',70000,'MALE','2005.06.25')
+insert into Agent values (7,'AKSHAY',80000,'MALE','2006.07.26')
+insert into Agent values (8,'KRISHNA',90000,'MALE','2007.08.27')
+insert into Agent values (9,'SAMIKSHA',50000,'FEMALE','2008.09.28')
+insert into Agent values (10,'SURBHI',70000,'FEMALE','2009.10.29')
+
+
+create clustered index CLID_Agentdetails
+on [dbo].[Agent](agent_Name desc,agent_Salary desc)
+
+SELECT * FROM [dbo].[Agent]
+
+SELECT * FROM [dbo].[Agent] where agent_id=2
+
+
+
+
+------------------------------------Non Clustered Index--------------------------------------------------------
+
+create Nonclustered index NON_CLID_Agentdetails
+on [dbo].[Agent](agent_Name ,agent_Salary )
+
+SELECT * FROM [dbo].[Agent]
+SELECT * FROM [dbo].[Agent] where agent_id=5
